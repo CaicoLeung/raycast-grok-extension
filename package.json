@@ -48,24 +48,8 @@
               "value": "grok-3-mini-beta"
             },
             {
-              "title": "grok-2-vision-1212 (Our latest multimodal which processes documents, diagrams, charts, screenshots, and photographs.)",
-              "value": "grok-2-vision-1212"
-            },
-            {
-              "title": "grok-2-image-1212 (Our latest image generation model capable of generating multiple images from text prompt.",
-              "value": "grok-2-image-1212"
-            },
-            {
               "title": "grok-2-1212 (Our latest text model with improved efficiency, speed and capabilities.",
               "value": "grok-2-1212"
-            },
-            {
-              "title": "grok-vision-beta (Our previous image understanding model.)",
-              "value": "grok-vision-beta"
-            },
-            {
-              "title": "grok-beta (Our latest image understanding model that can process a wide variety of visual information, including documents, diagrams, charts, screenshots, and photographs.)",
-              "value": "grok-beta"
             }
           ]
         },
@@ -78,14 +62,6 @@
           "default": "You may be given a text or a query or a picture as input, please provide a detailed and informative response."
         }
       ]
-    },
-    {
-      "name": "aiChat",
-      "title": "AI Chat",
-      "subtitle": "Grok AI",
-      "description": "Chat with Grok AI",
-      "icon": "grok-light.png",
-      "mode": "view"
     }
   ],
   "preferences": [
@@ -160,14 +136,17 @@
     "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.8",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.13.5",
     "@vitest/coverage-v8": "^3.0.7",
     "copyfiles": "^2.4.1",
     "dts-bundle-generator": "^9.5.1",
-    "eslint": "^9.21.0",
+    "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "jiti": "^2.4.2",
     "lint-staged": "^15.4.3",
@@ -187,12 +166,11 @@
     "vitest": "^3.0.7"
   },
   "dependencies": {
-    "@ai-sdk/xai": "^1.2.11",
     "@raycast/api": "^1.95.0",
     "@raycast/eslint-config": "^2.0.4",
     "@raycast/utils": "^1.19.1",
     "@types/react": "^19.1.1",
-    "ai": "^4.3.5",
+    "openai": "^4.93.0",
     "react": "^19.1.0",
     "usehooks-ts": "^3.1.1"
   }

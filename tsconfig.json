@@ -1,27 +1,17 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": ["src/**/*", "raycast-env.d.ts"],
   "compilerOptions": {
-    "rootDir": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@@/*": ["./*"]
-    },
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
+    "lib": ["ES2023"],
+    "module": "commonjs",
+    "target": "ES2022",
     "strict": true,
-    "sourceMap": true,
-    "resolveJsonModule": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client", "node"],
-    "jsx": "react"
-  },
-  "include": ["src"],
-  "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "types": ["node", "react"]
+  }
 }

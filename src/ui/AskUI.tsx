@@ -1,6 +1,6 @@
 import { Action, ActionPanel, Form, getSelectedText, Icon } from "@raycast/api";
 import { showFailureToast } from "@raycast/utils";
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export interface AskUIProps {
   onSubmit: (values: AslFormData) => void;
@@ -22,6 +22,7 @@ export default function AskUI(props: AskUIProps) {
       const selectedText = await getSelectedText();
       setTextarea(text => text + selectedText);
     } catch (error) {
+      console.error(error);
       await showFailureToast("Could not get the selected text");
     }
   }, []);
@@ -45,11 +46,11 @@ export default function AskUI(props: AskUIProps) {
         id="query"
         value={textarea}
         onChange={value => setTextarea(value)}
-        placeholder="Ask Gemini a question..."
+        placeholder="Ask Grok AI a question..."
       />
       {!hasBuffer && (
         <>
-          <Form.Description title="Image" text="Image that you want Gemini to analyze along with your prompt." />
+          <Form.Description title="Image" text="Image that you want Grok AI to analyze along with your prompt." />
           <Form.FilePicker id="files" title="" allowMultipleSelection={false} />
           <Form.Description text="Note that image data will not be carried over if you continue in Chat." />
         </>

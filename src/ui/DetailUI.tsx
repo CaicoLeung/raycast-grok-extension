@@ -1,15 +1,14 @@
 import { Detail, ActionPanel, Action, Keyboard, LaunchType, Icon, launchCommand } from "@raycast/api";
-import React from "react";
-import { LaunchProps } from "@raycast/api";
 
 export interface DetailUIProps {
   isLoading: boolean;
   textStream: string;
   lastQuery: string;
+  allowPaste?: boolean;
 }
 
-export default function DetailUI(props: DetailUIProps, launchContext: LaunchProps["launchContext"] = {}) {
-  const { allowPaste = false } = launchContext;
+export default function DetailUI(props: DetailUIProps) {
+  const { allowPaste = false } = props;
 
   return (
     <Detail

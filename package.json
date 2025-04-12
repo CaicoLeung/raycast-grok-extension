@@ -1,21 +1,154 @@
 {
-  "name": "vite-vanilla-ts-lib-starter",
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "raycast-grok",
+  "title": "Grok",
+  "description": "Access Grok AI conveniently through Raycast",
+  "icon": "grok-light.png",
   "private": true,
-  "version": "0.0.5",
-  "module": "./dist/vite-vanilla-ts-lib-starter.js",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/vite-vanilla-ts-lib-starter.js"
+  "author": "CaicoLeung",
+  "version": "0.0.1",
+  "commands": [
+    {
+      "name": "history",
+      "title": "History",
+      "description": "View your chat history",
+      "mode": "view",
+      "icon": "grok-light.png"
     },
-    "./dist/": {
-      "import": "./dist/"
+    {
+      "name": "askAI",
+      "title": "Ask AI",
+      "subtitle": "Grok",
+      "description": "Ask Grok AI a question",
+      "mode": "view",
+      "icon": "grok-light.png",
+      "arguments": [
+        {
+          "name": "query",
+          "placeholder": "Query",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "preferences": [
+        {
+          "name": "model",
+          "title": "Model",
+          "description": "Which model this command uses.",
+          "type": "dropdown",
+          "required": false,
+          "default": "grok-3-mini-beta",
+          "data": [
+            {
+              "title": "grok-3-beta (Our flagship model that excels at enterprise tasks like data extraction, programming, and text summarization.)",
+              "value": "grok-3-beta"
+            },
+            {
+              "title": "grok-3-mini-beta (A lightweight model that thinks before responding. Excels at quantitative tasks that involve math and reasoning.)",
+              "value": "grok-3-mini-beta"
+            },
+            {
+              "title": "grok-2-vision-1212 (Our latest multimodal which processes documents, diagrams, charts, screenshots, and photographs.)",
+              "value": "grok-2-vision-1212"
+            },
+            {
+              "title": "grok-2-image-1212 (Our latest image generation model capable of generating multiple images from text prompt.",
+              "value": "grok-2-image-1212"
+            },
+            {
+              "title": "grok-2-1212 (Our latest text model with improved efficiency, speed and capabilities.",
+              "value": "grok-2-1212"
+            },
+            {
+              "title": "grok-vision-beta (Our previous image understanding model.)",
+              "value": "grok-vision-beta"
+            },
+            {
+              "title": "grok-beta (Our latest image understanding model that can process a wide variety of visual information, including documents, diagrams, charts, screenshots, and photographs.)",
+              "value": "grok-beta"
+            }
+          ]
+        },
+        {
+          "name": "prompt",
+          "title": "System Prompt",
+          "description": "The prompt to use for this command.",
+          "type": "textfield",
+          "required": false,
+          "default": "You may be given a text or a query or a picture as input, please provide a detailed and informative response."
+        }
+      ]
+    },
+    {
+      "name": "aiChat",
+      "title": "AI Chat",
+      "subtitle": "Grok AI",
+      "description": "Chat with Grok AI",
+      "icon": "grok-light.png",
+      "mode": "view"
     }
-  },
-  "types": "./dist/index.d.ts",
+  ],
+  "preferences": [
+    {
+      "description": "Grok AI API Key",
+      "name": "apiKey",
+      "required": true,
+      "title": "Grok AI API Key",
+      "type": "password"
+    },
+    {
+      "description": "Which model Grok for Raycast uses by default (unless overriden by individual commands).",
+      "name": "defaultModel",
+      "title": "Model",
+      "type": "dropdown",
+      "required": false,
+      "default": "grok-3-mini-beta",
+      "data": [
+        {
+          "title": "grok-3-beta (Our flagship model that excels at enterprise tasks like data extraction, programming, and text summarization.)",
+          "value": "grok-3-beta"
+        },
+        {
+          "title": "grok-3-mini-beta (A lightweight model that thinks before responding. Excels at quantitative tasks that involve math and reasoning.)",
+          "value": "grok-3-mini-beta"
+        },
+        {
+          "title": "grok-2-vision-1212 (Our latest multimodal which processes documents, diagrams, charts, screenshots, and photographs.)",
+          "value": "grok-2-vision-1212"
+        },
+        {
+          "title": "grok-2-image-1212 (Our latest image generation model capable of generating multiple images from text prompt.",
+          "value": "grok-2-image-1212"
+        },
+        {
+          "title": "grok-2-1212 (Our latest text model with improved efficiency, speed and capabilities.",
+          "value": "grok-2-1212"
+        },
+        {
+          "title": "grok-vision-beta (Our previous image understanding model.)",
+          "value": "grok-vision-beta"
+        },
+        {
+          "title": "grok-beta (Our latest image understanding model that can process a wide variety of visual information, including documents, diagrams, charts, screenshots, and photographs.)",
+          "value": "grok-beta"
+        }
+      ]
+    },
+    {
+      "name": "customModel",
+      "title": "Custom Model",
+      "description": "Custom model in case you use a special model that is not listed in the dropdown. It will override the default model. Keep this empty if you don't have a custom model.",
+      "type": "textfield",
+      "required": false
+    }
+  ],
   "scripts": {
-    "dev": "vite --host",
-    "build": "rimraf build/**/* && tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts && copyfiles ./package.json build",
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "pull": "ray pull-contributions",
+    "publish": "ray publish",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint:scripts": "eslint . --ext .ts",
@@ -52,5 +185,15 @@
     "typescript-eslint": "^8.25.0",
     "vite": "^6.2.0",
     "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "@ai-sdk/xai": "^1.2.11",
+    "@raycast/api": "^1.95.0",
+    "@raycast/eslint-config": "^2.0.4",
+    "@raycast/utils": "^1.19.1",
+    "@types/react": "^19.1.1",
+    "ai": "^4.3.5",
+    "react": "^19.1.0",
+    "usehooks-ts": "^3.1.1"
   }
 }

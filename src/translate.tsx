@@ -1,7 +1,7 @@
 import { getSelectedText, LaunchProps, showToast, Toast } from "@raycast/api";
-import { useEffect } from "react";
 import DetailUI from "./ui/DetailUI";
 import { useGrok } from "./hooks/useGrok";
+import { useMount } from "ahooks";
 
 const prompt =
   "You are a translation engine, translate the text to Chinese directly without explanation and any explanatory content";
@@ -10,7 +10,7 @@ export default function Translate({ launchContext }: LaunchProps) {
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
 
   // 获取选中的文本
-  useEffect(() => {
+  useMount(() => {
     (async () => {
       try {
         const text = await getSelectedText();
@@ -25,7 +25,7 @@ export default function Translate({ launchContext }: LaunchProps) {
         });
       }
     })();
-  }, [submit]);
+  });
 
   return <DetailUI textStream={textStream} isLoading={isLoading} lastQuery={lastQuery} />;
 }

@@ -62,6 +62,13 @@
           "default": "You may be given a text or a query or a picture as input, please provide a detailed and informative response."
         }
       ]
+    },
+    {
+      "name": "translate",
+      "title": "Translate",
+      "description": "Translate text from English to Chinese",
+      "mode": "view",
+      "icon": "grok-light.png"
     }
   ],
   "preferences": [

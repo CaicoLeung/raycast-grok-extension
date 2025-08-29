@@ -7,10 +7,7 @@ import fs from "node:fs";
 
 export default function AskAI({ launchContext }: LaunchProps) {
   const { prompt } = getPreferenceValues();
-  const { textStream, isLoading, lastQuery, submit } = useGrok({
-    ...launchContext,
-    context: launchContext?.buffer ?? prompt,
-  });
+  const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
   const [selected, setSelected] = useState("");
 
   const argQuery = useMemo<string>(

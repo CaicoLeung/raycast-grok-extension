@@ -54,7 +54,7 @@ export default function AskUI(props: AskUIProps) {
           showToast({
             style: Toast.Style.Failure,
             title: "Model doesn't support images",
-            message: `${currentModel} is a text-only model. Please switch to a vision model like grok-2-vision-1212, grok-vision-beta, or grok-beta in preferences to analyze images.`,
+            message: `${currentModel} is a text-only model. Please switch to a vision model like grok-2-vision-1212 or grok-beta in preferences to analyze images.`,
           });
           return;
         }
@@ -126,7 +126,7 @@ export default function AskUI(props: AskUIProps) {
             text={
               supportsVision
                 ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
-                : "💡 Vision-capable models: grok-2-vision-1212, grok-vision-beta, grok-beta"
+                : "💡 Vision-capable models: grok-2-vision-1212, grok-beta"
             }
           />
         </>

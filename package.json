@@ -102,6 +102,10 @@
       "default": "grok-3-mini-beta",
       "data": [
         {
+          "title": "grok-4 (Our latest multimodal model that processes documents, diagrams, charts, screenshots, and photographs.)",
+          "value": "grok-4"
+        },
+        {
           "title": "grok-3-beta (Our flagship model that excels at enterprise tasks like data extraction, programming, and text summarization.)",
           "value": "grok-3-beta"
         },
@@ -122,12 +126,16 @@
           "value": "grok-2-1212"
         },
         {
-          "title": "grok-vision-beta (Our previous image understanding model.)",
-          "value": "grok-vision-beta"
-        },
-        {
           "title": "grok-beta (Our latest image understanding model that can process a wide variety of visual information, including documents, diagrams, charts, screenshots, and photographs.)",
           "value": "grok-beta"
+        },
+        {
+          "title": "grok-vision-2 (xAI's best vision model with enhanced visual comprehension and reasoning capabilities.)",
+          "value": "grok-vision-2"
+        },
+        {
+          "title": "grok-vision-beta (Beta vision model for processing visual information and multimodal tasks.)",
+          "value": "grok-vision-beta"
         }
       ]
     },

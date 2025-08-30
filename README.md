@@ -1,46 +1,182 @@
-# Raycast Grok Extension - AI Competition Entry
+# 🚀 Raycast Grok Extension
 
-This is a Raycast extension that integrates with Grok AI, developed as part of the TEK AI Competition.
+> A powerful AI assistant extension that brings Grok AI directly to your fingertips through Raycast's elegant interface.
 
-## Competition Information
+![Grok Extension](assets/grok-light.png)
 
-- 所有参赛作品知识产权归公司所有，需符合隐私保护法规， 确保符合信息安全； 
-- 开发周期位6月到8月，截止日前按规定上传代码到指定的repo中，以个人或者团队名字命名，后面跟上location缩写和作品名称，比如: feature/YourName-SH-ProjectName 
-- 不限开发语言和平台，IOS/安卓/WEB端任选一端，后端语言不限，数据库关系型/NoSQL自选； 
-- 开发工具必须选用开源IDE以及开源框架或者社区版工具，数据库以及DB工具也只能选用开源或者社区版, AI工具也请选用开源免费的AI框架； 
-- 开发中期7月的两周会有一个中期成果展示会，邀请参赛队来进行中期展示，可线上拨入；只需展示进度即可，不需要展示成品或能运行的代码; 每个地区会有一位DL的Owner，去检查每个地区的进度 
-- 单元测试代码可选，有完整的单元测试代码为加分项 
-- 参赛项目必须围绕竞赛主题，且具有一定的创新性、实用性和可行性。 
-- 参赛者需独立完成项目开发，不得抄袭或盗用他人成果。如有发现，将取消参赛资格。 
-- 展示环节需要先展示需求文档或链接，先展示文档里所设计的功能，再演示作品是否实现 
-- 在竞赛过程中，各团队应遵守公司的各项规章制度，确保项目开发过程的安全和合规。 
-- 参赛团队不得使用客户电脑，只能用自己电脑来参赛。代码中不能有任何的客户信息。不能复制粘贴任何的客户现有代码。尽量不要在客户的办公室或者客户的网络里上传代码。 
-- 所有代码将上传到公司共享盘上存档 
-- 在最后展示环节，如果报名的团队所在城市有我们能线下举办展示环节的办公室，可以邀请团队来办公室线下一起参与；如果是临近城市的，可以支持报销高铁票等。如果是报名城市太远无法线下的团队，我们也支持线上拨入
+## ✨ Why Raycast Over Web Interfaces?
 
-## Features
+**Raycast** revolutionizes how we interact with applications by providing a unified, lightning-fast command palette that eliminates the friction of traditional web interfaces:
 
-- ESM modules
-- IIFE bundle for direct browser support without bundler
-- Typings bundle
-- ESLint - scripts linter
-- Stylelint - styles linter
-- Prettier - formatter
-- Vitest - test framework
-- Husky + lint-staged - pre-commit git hook set up for formatting
+- **⚡ Instant Access**: Launch any command with a simple keystroke (`⌘ Space`) - no need to open browsers or navigate through web pages
+- **🎯 Context-Aware**: Seamlessly work with selected text, clipboard content, and screen captures without manual copy-pasting
+- **🔄 Native Integration**: Deep system integration allows for smooth workflows between different apps and tools
+- **💨 Zero Loading Time**: Native performance means instant responses, unlike web interfaces that require page loads
+- **🎨 Consistent UX**: Unified interface design across all tools maintains your flow state
+- **⌨️ Keyboard-First**: Designed for power users who prefer keyboard shortcuts over mouse navigation
+- **📱 Always Available**: System-wide accessibility means your AI assistant is just one shortcut away, regardless of what you're working on
 
-## Usage
+## 🧠 Why Grok AI?
 
-The starter contains the following scripts:
+**Grok AI** stands out in the crowded AI landscape for several compelling reasons:
 
-- `dev` - starts dev server
-- `build` - generates the following bundles: ESM (`.js`) and IIFE (`.iife.js`). The name of bundle is automatically taken from `package.json` name property
-- `test` - starts vitest and runs all tests
-- `test:coverage` - starts vitest and run all tests with code coverage report
-- `lint:scripts` - lint `.ts` files with eslint
-- `lint:styles` - lint `.css` and `.scss` files with stylelint
-- `format:scripts` - format `.ts`, `.html` and `.json` files with prettier
-- `format:styles` - format `.cs` and `.scss` files with stylelint
-- `format` - format all with prettier and stylelint
-- `prepare` - script for setting up husky pre-commit hook
-- `uninstall-husky` - script for removing husky from repository
+### 🎭 Authentic AI Personality
+According to Elon Musk's vision, Grok AI maintains its natural personality without artificial intervention or heavy-handed content moderation. This means:
+- **🚫 No Political Correctness Filters**: Grok provides honest, unfiltered responses without being constrained by excessive political correctness
+- **🎯 Genuine Interactions**: The AI's responses feel more authentic and human-like, as they aren't artificially sanitized
+- **💭 Natural Reasoning**: Grok thinks and responds in a more natural way, closer to how humans actually process information
+
+### 🔧 Technical Excellence
+- **🌟 State-of-the-Art Models**: Access to cutting-edge models including Grok-4, Grok-3-Beta, and specialized vision models
+- **👁️ Multimodal Capabilities**: Advanced image understanding and analysis capabilities
+- **⚡ Real-Time Processing**: Fast response times with streaming capabilities
+- **🎨 Versatile Applications**: From text analysis to image understanding, translation to code explanation
+
+### 🆓 Accessibility
+- **💰 Cost-Effective**: More accessible pricing compared to some competitors
+- **🔓 Open Philosophy**: Aligned with principles of open AI development and reduced censorship
+
+## 🛠️ Features & Use Cases
+
+This extension provides **8 powerful commands** that cover a wide range of AI-assisted workflows:
+
+### 1. 💬 **Ask AI**
+- **Purpose**: General-purpose AI conversation and query handling
+- **Use Cases**:
+  - Get answers to complex questions
+  - Brainstorm ideas and solutions
+  - Analyze problems and get recommendations
+  - Code review and programming assistance
+- **Models Available**: Grok-3-Beta, Grok-3-Mini-Beta, Grok-2-1212
+- **Usage**: `⌘ Space` → Type "Ask AI" → Enter your question
+
+### 2. 📖 **History**
+- **Purpose**: View and manage your chat history with Grok AI
+- **Use Cases**:
+  - Review previous conversations
+  - Copy responses or prompts for reuse
+  - Track your AI interaction patterns
+  - Clear history when needed
+- **Features**: Searchable history, copy functionality, timestamp tracking
+
+### 3. 🌐 **Translate**
+- **Purpose**: Intelligent bidirectional translation between English and Chinese
+- **Use Cases**:
+  - Translate selected text instantly
+  - Work with multilingual documents
+  - Communicate across language barriers
+  - Learn new languages through context
+- **Smart Detection**: Automatically detects source language and translates accordingly
+
+### 4. 📚 **Lookup**
+- **Purpose**: Dictionary and reference lookup functionality
+- **Use Cases**:
+  - Define unfamiliar words or terms
+  - Get detailed explanations of concepts
+  - Understand technical jargon
+  - Expand vocabulary and knowledge
+
+### 5. 💡 **Explain It**
+- **Purpose**: Detailed explanations of complex topics or selected text
+- **Use Cases**:
+  - Understand difficult concepts
+  - Break down complex code or documentation
+  - Get simplified explanations of technical topics
+  - Educational assistance and learning support
+
+### 6. 📄 **Summarize Site**
+- **Purpose**: Intelligent webpage content summarization
+- **Use Cases**:
+  - Quickly understand long articles
+  - Extract key points from research papers
+  - Get meeting notes from lengthy documents
+  - Save time on information consumption
+- **Features**: Structured summaries with key points, target audience analysis, and actionable insights
+
+### 7. 🖼️ **Ask About Selected Screen Area**
+- **Purpose**: AI-powered analysis of screenshots and visual content
+- **Use Cases**:
+  - Analyze UI/UX designs
+  - Get help with error messages or dialogs
+  - Understand charts, graphs, and diagrams
+  - Accessibility assistance for visual content
+- **Vision Models**: Grok-4, Grok-2-Vision-1212, Grok-Beta, Grok-Vision-2
+- **Smart Capture**: Automatically captures selected screen areas
+
+### 8. 📝 **Ask About Selected Text**
+- **Purpose**: Context-aware analysis of selected or clipboard text
+- **Use Cases**:
+  - Analyze code snippets
+  - Get explanations of selected paragraphs
+  - Quick fact-checking and verification
+  - Context-sensitive help and guidance
+- **Smart Text Acquisition**: Works with both selected text and clipboard content
+
+## 🔧 Technology Stack
+
+This extension is built using modern web technologies and Raycast's powerful API:
+
+### **Frontend Framework**
+- **⚛️ React 19.1.1**: Latest React with concurrent features and improved performance
+- **📘 TypeScript 5.9.2**: Full type safety and enhanced developer experience
+- **🎨 Raycast API 1.102.5**: Native Raycast integration for seamless UX
+
+### **AI Integration**
+- **🤖 OpenAI SDK 4.104.0**: Robust API client for Grok AI communication
+- **🔄 Streaming Responses**: Real-time response streaming for better UX
+- **🎯 Multiple Model Support**: Access to various Grok models for different use cases
+
+### **Development Tools**
+- **⚡ Vite 6.3.5**: Lightning-fast build tool and development server
+- **🧪 Vitest 3.2.4**: Modern testing framework with coverage support
+- **🔍 ESLint 9.34.0**: Code quality and consistency enforcement
+- **💅 Prettier 3.6.2**: Automated code formatting
+
+### **Utilities & Hooks**
+- **🪝 usehooks-ts 3.1.1**: Collection of useful React hooks
+- **🛠️ Raycast Utils 1.19.1**: Additional utilities for Raycast development
+- **📦 Custom Hooks**: `useGrok` for AI integration, `useChatHistory` for state management
+
+### **Build & Deployment**
+- **📦 Package Management**: Support for both npm and pnpm
+- **🔨 Build Pipeline**: Automated building with ray CLI
+- **🚀 Publishing**: Direct publishing to Raycast Store
+- **🧹 Code Quality**: Husky pre-commit hooks with lint-staged
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Raycast**: Install from [raycast.com](https://raycast.com)
+- **Grok AI API Key**: Obtain from xAI platform
+
+### Installation
+1. Clone this repository
+2. Install dependencies: `npm install` or `pnpm install`
+3. Configure your Grok AI API key in Raycast preferences
+4. Build the extension: `npm run build`
+5. Install in Raycast: `npm run dev`
+
+### Configuration
+- Set your **Grok AI API Key** in the extension preferences
+- Choose your preferred **default model** (Grok-3-Mini-Beta recommended for general use)
+- Customize **system prompts** for different commands if needed
+
+## 🎯 Usage Tips
+
+- **⌨️ Keyboard Shortcuts**: Learn the shortcuts for frequently used commands
+- **📋 Text Selection**: Select text before launching commands for context-aware responses
+- **🖼️ Screen Capture**: Use the screen area selection for visual analysis
+- **📚 History**: Leverage the history feature to build on previous conversations
+- **🎛️ Model Selection**: Choose appropriate models based on your task (vision models for images, text models for conversations)
+
+## 🤝 Contributing
+
+This project was developed as part of the TEK AI Competition. Contributions, suggestions, and feedback are welcome!
+
+## 📄 License
+
+See [LICENSE.md](LICENSE.md) for details.
+
+---
+
+*Built with ❤️ using Raycast API and Grok AI*

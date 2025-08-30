@@ -71,6 +71,13 @@
       "icon": "grok-light.png"
     },
     {
+      "name": "lookup",
+      "title": "Lookup",
+      "description": "Lookup in the dictionary",
+      "mode": "view",
+      "icon": "grok-light.png"
+    },
+    {
       "name": "explainIt",
       "title": "Explain It",
       "description": "Explain the text",

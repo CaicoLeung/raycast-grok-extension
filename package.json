@@ -130,6 +130,13 @@
           "default": "You are given a screenshot. Please analyze the image and provide a detailed and informative response to the user's question about what you see in the image."
         }
       ]
+    },
+    {
+      "name": "askAboutSelectedText",
+      "title": "Ask About Selected Text",
+      "description": "Ask Grok AI about the selected text",
+      "mode": "view",
+      "icon": "grok-light.png"
     }
   ],
   "preferences": [

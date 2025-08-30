@@ -1,6 +1,9 @@
-import { Action, ActionPanel, Form, getSelectedText, Icon } from "@raycast/api";
+import { Action, ActionPanel, Form, getSelectedText, Icon, showToast, Toast, getPreferenceValues } from "@raycast/api";
 import { showFailureToast } from "@raycast/utils";
 import { useCallback, useMemo, useState } from "react";
+import { ACCEPT_IMAGE_TYPES } from "../constants/accept";
+import { isVisionModel } from "../utils";
+import { PreferenceModel } from "../models/preference.model";
 
 export interface AskUIProps {
   onSubmit: (values: AslFormData) => void;
@@ -14,6 +17,9 @@ export interface AslFormData {
 
 export default function AskUI(props: AskUIProps) {
   const [textarea, setTextarea] = useState("");
+  const { defaultModel, customModel } = getPreferenceValues<PreferenceModel>();
+  const currentModel = customModel?.trim() || defaultModel;
+  const supportsVision = isVisionModel(currentModel);
 
   const hasBuffer = useMemo(() => props.buffer && props.buffer.length > 0, [props.buffer]);
 
@@ -27,11 +33,57 @@ export default function AskUI(props: AskUIProps) {
     }
   }, []);
 
+  const handleSubmit = useCallback(
+    (values: AslFormData) => {
+      // Validate input
+      if (!values.query || values.query.trim() === "") {
+        showToast({
+          style: Toast.Style.Failure,
+          title: "Please enter a question",
+          message: "The prompt field cannot be empty",
+        });
+        return;
+      }
+
+      // Check if files are provided and validate them
+      if (values.files && values.files.length > 0) {
+        console.debug(values.files);
+
+        // Check if current model supports vision
+        if (!supportsVision) {
+          showToast({
+            style: Toast.Style.Failure,
+            title: "Model doesn't support images",
+            message: `${currentModel} is a text-only model. Please switch to a vision model like grok-2-vision-1212, grok-vision-beta, or grok-beta in preferences to analyze images.`,
+          });
+          return;
+        }
+
+        const invalidFiles = values.files.filter(file => {
+          const ext = file.toLowerCase().split(".").pop();
+          return !ACCEPT_IMAGE_TYPES.includes(ext || "");
+        });
+
+        if (invalidFiles.length > 0) {
+          showToast({
+            style: Toast.Style.Failure,
+            title: "Invalid file type",
+            message: `Please select only image files (${ACCEPT_IMAGE_TYPES.join(", ").toUpperCase()})`,
+          });
+          return;
+        }
+      }
+
+      props.onSubmit(values);
+    },
+    [props, supportsVision, currentModel]
+  );
+
   return (
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm onSubmit={props.onSubmit} />
+          <Action.SubmitForm title="Ask Grok AI" icon={Icon.Message} onSubmit={handleSubmit} />
           <Action
             icon={Icon.Clipboard}
             title="Append Selected Text"
@@ -47,12 +99,36 @@ export default function AskUI(props: AskUIProps) {
         value={textarea}
         onChange={value => setTextarea(value)}
         placeholder="Ask Grok AI a question..."
+        info="Enter your question or prompt for Grok AI. You can also attach images for visual analysis."
       />
       {!hasBuffer && (
         <>
-          <Form.Description title="Image" text="Image that you want Grok AI to analyze along with your prompt." />
-          <Form.FilePicker id="files" title="" allowMultipleSelection={false} />
-          <Form.Description text="Note that image data will not be carried over if you continue in Chat." />
+          <Form.Separator />
+          <Form.Description
+            title="Image Analysis"
+            text={
+              supportsVision
+                ? "Upload an image that you want Grok AI to analyze along with your prompt."
+                : `⚠️ Current model (${currentModel}) doesn't support images. Switch to a vision model in preferences to enable image analysis.`
+            }
+          />
+          {supportsVision && (
+            <Form.FilePicker
+              id="files"
+              title="Select Image"
+              allowMultipleSelection={false}
+              canChooseFiles={true}
+              canChooseDirectories={false}
+              info="Supported formats: JPG, PNG, GIF, WebP, BMP, HEIC"
+            />
+          )}
+          <Form.Description
+            text={
+              supportsVision
+                ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
+                : "💡 Vision-capable models: grok-2-vision-1212, grok-vision-beta, grok-beta"
+            }
+          />
         </>
       )}
     </Form>

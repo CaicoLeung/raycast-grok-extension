@@ -4,6 +4,7 @@ import { useGrok } from "./hooks/useGrok";
 import AskUI, { AslFormData } from "./ui/AskUI";
 import DetailUI from "./ui/DetailUI";
 import fs from "node:fs";
+import { ACCEPT_IMAGE_TYPES } from "./constants/accept";
 
 export default function AskAI({ launchContext }: LaunchProps) {
   const { prompt } = getPreferenceValues();
@@ -18,11 +19,24 @@ export default function AskAI({ launchContext }: LaunchProps) {
   const onSubmit = useCallback(
     (values: AslFormData) => {
       console.log("onSubmit", values);
-      const _files = values?.files
-        ?.filter((file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile())
-        .map((file: string) => fs.readFileSync(file));
 
-      submit(`${values.query}\n${selected}`);
+      // Process image files
+      let imageFiles: Buffer[] = [];
+      if (values?.files && values.files.length > 0) {
+        imageFiles = values.files
+          .filter((file: string) => {
+            if (!fs.existsSync(file) || !fs.lstatSync(file).isFile()) {
+              return false;
+            }
+            // Check if it's an image file
+            const ext = file.toLowerCase().split(".").pop();
+            return ACCEPT_IMAGE_TYPES.includes(ext || "");
+          })
+          .map((file: string) => fs.readFileSync(file));
+      }
+
+      const queryText = selected ? `${values.query}\n${selected}` : values.query;
+      submit(queryText, imageFiles);
     },
     [selected, submit]
   );

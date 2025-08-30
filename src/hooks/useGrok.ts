@@ -5,6 +5,8 @@ import { showFailureToast } from "@raycast/utils";
 import { useState, useCallback } from "react";
 import { PreferenceModel } from "../models/preference.model";
 import { useBoolean } from "usehooks-ts";
+import { ChatCompletionContentPart, ChatCompletionMessageParam } from "openai/resources/chat";
+import { isVisionModel } from "../utils";
 
 const { defaultModel, customModel, prompt: systemPrompt, apiKey } = getPreferenceValues<PreferenceModel>();
 const model = customModel?.trim() || defaultModel;
@@ -21,23 +23,64 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
   const [lastQuery, setLastQuery] = useState<string>(launchContext?.context || launchContext?.fallbackText || "");
 
   const submit = useCallback(
-    async (query: string) => {
+    async (query: string, imageFiles?: Buffer[]) => {
       if (query.trim() === "") {
         return;
       }
+
+      // Check if images are provided but model doesn't support vision
+      if (imageFiles && imageFiles.length > 0 && !isVisionModel(model)) {
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Model doesn't support images",
+          message: `${model} is a text-only model. Please use a vision model like grok-2-vision-1212, grok-vision-beta, or grok-beta to analyze images.`,
+        });
+        return;
+      }
+
       try {
         const start = Date.now();
         startLoading();
         let delta = "";
         setLastQuery(query);
+
+        // Prepare messages with image support
+        const messages: ChatCompletionMessageParam[] = [{ role: "system", content: prompt || systemPrompt }];
+
+        // If we have images, create a message with both text and images
+        if (imageFiles && imageFiles.length > 0) {
+          const content: ChatCompletionContentPart[] = [{ type: "text", text: query }];
+
+          // Add images to the content
+          imageFiles.forEach(imageBuffer => {
+            const base64Image = imageBuffer.toString("base64");
+            content.push({
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${base64Image}`,
+              },
+            });
+          });
+
+          messages.push({
+            role: "user",
+            content: content,
+          });
+        } else {
+          // Text-only message
+          messages.push({
+            role: "user",
+            content: query,
+          });
+
+          console.debug(messages);
+        }
+
         const completion = await client.chat.completions.create({
           model: model,
           stream: true,
           max_completion_tokens: 1024 * 10,
-          messages: [
-            { role: "system", content: prompt || systemPrompt },
-            { role: "user", content: query },
-          ],
+          messages: messages,
         });
         for await (const chunk of completion) {
           const finish_reason = chunk.choices[0].finish_reason;

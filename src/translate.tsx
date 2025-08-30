@@ -1,4 +1,4 @@
-import { getSelectedText, LaunchProps, showToast, Toast } from "@raycast/api";
+import { getSelectedText, LaunchProps, showToast, Toast, Clipboard } from "@raycast/api";
 import DetailUI from "./ui/DetailUI";
 import { useGrok } from "./hooks/useGrok";
 import { useAsyncEffect } from "ahooks";
@@ -9,18 +9,32 @@ const prompt =
 export default function Translate({ launchContext }: LaunchProps) {
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
 
-  // 获取选中的文本
+  // 获取选中的文本或剪切板文本
   useAsyncEffect(async () => {
     try {
-      const text = await getSelectedText();
-      console.debug("Acquired selected text:", text);
-      submit(text);
+      // 首先尝试获取选中的文本
+      let text = "";
+      try {
+        text = await getSelectedText();
+        console.debug("Acquired selected text:", text);
+      } catch {
+        // 如果没有选中文本，则获取剪切板的最近一条文本
+        const clipboardText = await Clipboard.readText();
+        text = clipboardText || "";
+        console.debug("Acquired clipboard text:", text);
+      }
+
+      if (text) {
+        submit(text);
+      } else {
+        throw new Error("No text available");
+      }
     } catch (error) {
-      console.error("Acquired selected text:", error);
+      console.error("Acquired text failed:", error);
       showToast({
         style: Toast.Style.Failure,
-        title: "Acquired selected text failed",
-        message: "Please ensure that the text to be translated is selected before use",
+        title: "Acquired text failed",
+        message: "Please ensure that text is selected or available in clipboard",
       });
     }
   }, [submit]);

@@ -69,6 +69,13 @@
       "description": "Translate text from English to Chinese",
       "mode": "view",
       "icon": "grok-light.png"
+    },
+    {
+      "name": "explainIt",
+      "title": "Explain It",
+      "description": "Explain the text",
+      "mode": "view",
+      "icon": "grok-light.png"
     }
   ],
   "preferences": [

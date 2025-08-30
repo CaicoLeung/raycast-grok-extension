@@ -76,6 +76,13 @@
       "description": "Explain the text",
       "mode": "view",
       "icon": "grok-light.png"
+    },
+    {
+      "name": "summarizeSite",
+      "title": "Summarize Site",
+      "description": "Summarize the site",
+      "mode": "view",
+      "icon": "grok-light.png"
     }
   ],
   "preferences": [

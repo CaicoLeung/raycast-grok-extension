@@ -45,9 +45,13 @@ export default function AskUI(props: AskUIProps) {
         return;
       }
 
+      // Merge buffer files with form files
+      const allFiles = [...(props.buffer || []), ...(values.files || [])];
+      const finalValues = { ...values, files: allFiles };
+
       // Check if files are provided and validate them
-      if (values.files && values.files.length > 0) {
-        console.debug(values.files);
+      if (allFiles && allFiles.length > 0) {
+        console.debug(allFiles);
 
         // Check if current model supports vision
         if (!supportsVision) {
@@ -59,7 +63,7 @@ export default function AskUI(props: AskUIProps) {
           return;
         }
 
-        const invalidFiles = values.files.filter(file => {
+        const invalidFiles = allFiles.filter(file => {
           const ext = file.toLowerCase().split(".").pop();
           return !ACCEPT_IMAGE_TYPES.includes(ext || "");
         });
@@ -74,7 +78,7 @@ export default function AskUI(props: AskUIProps) {
         }
       }
 
-      props.onSubmit(values);
+      props.onSubmit(finalValues);
     },
     [props, supportsVision, currentModel]
   );
@@ -101,9 +105,14 @@ export default function AskUI(props: AskUIProps) {
         placeholder="Ask Grok AI a question..."
         info="Enter your question or prompt for Grok AI. You can also attach images for visual analysis."
       />
-      {!hasBuffer && (
+      <Form.Separator />
+      {hasBuffer ? (
+        <Form.Description
+          title="Screenshot Analysis"
+          text={`📸 Screenshot captured and ready for analysis. ${props.buffer?.length} image(s) attached.`}
+        />
+      ) : (
         <>
-          <Form.Separator />
           <Form.Description
             title="Image Analysis"
             text={
@@ -122,15 +131,17 @@ export default function AskUI(props: AskUIProps) {
               info="Supported formats: JPG, PNG, GIF, WebP, BMP, HEIC"
             />
           )}
-          <Form.Description
-            text={
-              supportsVision
-                ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
-                : "💡 Vision-capable models: grok-2-vision-1212, grok-beta"
-            }
-          />
         </>
       )}
+      <Form.Description
+        text={
+          hasBuffer
+            ? "💡 Ask any question about the captured screenshot."
+            : supportsVision
+            ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
+            : "💡 Vision-capable models: grok-2-vision-1212, grok-beta"
+        }
+      />
     </Form>
   );
 }

@@ -1,20 +1,26 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getPreferenceValues, getSelectedText, LaunchProps, showToast, Toast } from "@raycast/api";
+import { useCallback } from "react";
+import { getPreferenceValues, LaunchProps } from "@raycast/api";
 import { useGrok } from "./hooks/useGrok";
 import AskUI, { AslFormData } from "./ui/AskUI";
 import DetailUI from "./ui/DetailUI";
 import fs from "node:fs";
 import { ACCEPT_IMAGE_TYPES } from "./constants/accept";
 
-export default function AskAI({ launchContext }: LaunchProps) {
+export interface AskAILaunchContext {
+  arguments: {
+    query: string;
+  };
+  launchContext: {
+    files?: string[];
+    context?: string;
+    useSelected?: boolean;
+    allowPaste?: boolean;
+  };
+}
+
+export default function AskAI({ launchContext }: LaunchProps<AskAILaunchContext>) {
   const { prompt } = getPreferenceValues();
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
-  const [selected, setSelected] = useState("");
-
-  const argQuery = useMemo<string>(
-    () => launchContext?.args || launchContext?.fallbackText || "",
-    [launchContext?.args, launchContext?.fallbackText]
-  );
 
   const onSubmit = useCallback(
     (values: AslFormData) => {
@@ -22,8 +28,11 @@ export default function AskAI({ launchContext }: LaunchProps) {
 
       // Process image files
       let imageFiles: Buffer[] = [];
-      if (values?.files && values.files.length > 0) {
-        imageFiles = values.files
+      const files = values?.files || [];
+      const screenshotFiles: string[] = [];
+
+      if (files && files.length > 0) {
+        imageFiles = files
           .filter((file: string) => {
             if (!fs.existsSync(file) || !fs.lstatSync(file).isFile()) {
               return false;
@@ -32,39 +41,32 @@ export default function AskAI({ launchContext }: LaunchProps) {
             const ext = file.toLowerCase().split(".").pop();
             return ACCEPT_IMAGE_TYPES.includes(ext || "");
           })
-          .map((file: string) => fs.readFileSync(file));
-      }
-
-      const queryText = selected ? `${values.query}\n${selected}` : values.query;
-      submit(queryText, imageFiles);
-    },
-    [selected, submit]
-  );
-
-  useEffect(() => {
-    (async () => {
-      if (launchContext?.useSelected) {
-        try {
-          const selectedText = await getSelectedText();
-          setSelected(selectedText);
-          if (!argQuery) {
-            submit(`${launchContext?.context}\n${selectedText}`);
-          } else {
-            submit(`${launchContext?.context}\n${argQuery}\n${selectedText}`);
-          }
-          return;
-        } catch (_error) {
-          await showToast({
-            style: Toast.Style.Failure,
-            title: "Could not get the selected text. Continue without it.",
+          .map((file: string) => {
+            // Track screenshot files for cleanup
+            if (file.includes("screenshot_")) {
+              screenshotFiles.push(file);
+            }
+            return fs.readFileSync(file);
           });
+      }
+
+      // Submit to AI
+      submit(values.query, imageFiles);
+
+      // Clean up temporary screenshot files
+      screenshotFiles.forEach(file => {
+        try {
+          if (fs.existsSync(file)) {
+            fs.unlinkSync(file);
+            console.log("Cleaned up screenshot file:", file);
+          }
+        } catch (error) {
+          console.error("Failed to clean up screenshot file:", file, error);
         }
-      }
-      if (argQuery) {
-        submit(argQuery);
-      }
-    })();
-  }, [argQuery, launchContext?.context, launchContext?.useSelected, selected, submit]);
+      });
+    },
+    [submit]
+  );
 
   return isLoading || textStream ? (
     <DetailUI
@@ -74,6 +76,6 @@ export default function AskAI({ launchContext }: LaunchProps) {
       lastQuery={lastQuery}
     />
   ) : (
-    <AskUI onSubmit={onSubmit} />
+    <AskUI onSubmit={onSubmit} buffer={launchContext?.files} />
   );
 }

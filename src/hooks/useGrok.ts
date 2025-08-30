@@ -2,9 +2,8 @@ import { getPreferenceValues, LaunchProps, showToast, Toast } from "@raycast/api
 import OpenAI from "openai";
 import { useChatHistory } from "./useChatHistory";
 import { showFailureToast } from "@raycast/utils";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { PreferenceModel } from "../models/preference.model";
-import { useBoolean } from "usehooks-ts";
 import { ChatCompletionContentPart, ChatCompletionMessageParam } from "openai/resources/chat";
 import { isVisionModel } from "../utils";
 
@@ -18,9 +17,12 @@ const client = new OpenAI({
 
 export function useGrok(prompt: string, launchContext?: LaunchProps["launchContext"]) {
   const { addToHistory } = useChatHistory();
-  const { value: isLoading, setTrue: startLoading, setFalse: stopLoading } = useBoolean(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [textStream, setTextStream] = useState<string>("");
   const [lastQuery, setLastQuery] = useState<string>(launchContext?.context || launchContext?.fallbackText || "");
+
+  // Memoize the prompt to ensure stable reference
+  const stablePrompt = useMemo(() => prompt, [prompt]);
 
   const submit = useCallback(
     async (query: string, imageFiles?: Buffer[]) => {
@@ -40,12 +42,12 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
 
       try {
         const start = Date.now();
-        startLoading();
+        setIsLoading(true);
         let delta = "";
         setLastQuery(query);
 
         // Prepare messages with image support
-        const messages: ChatCompletionMessageParam[] = [{ role: "system", content: prompt || systemPrompt }];
+        const messages: ChatCompletionMessageParam[] = [{ role: "system", content: stablePrompt || systemPrompt }];
 
         // If we have images, create a message with both text and images
         if (imageFiles && imageFiles.length > 0) {
@@ -128,7 +130,7 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
                 title: "Response Finished",
                 message: `Completed in ${duration / 1000}s`,
               });
-              stopLoading();
+              setIsLoading(false);
               break;
             }
             case "length":
@@ -156,10 +158,10 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
         }
       } catch (error) {
         showFailureToast(error);
-        stopLoading();
+        setIsLoading(false);
       }
     },
-    [addToHistory, prompt, startLoading, stopLoading]
+    [addToHistory, stablePrompt]
   );
 
   return {

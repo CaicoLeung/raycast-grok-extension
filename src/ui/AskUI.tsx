@@ -138,8 +138,8 @@ export default function AskUI(props: AskUIProps) {
           hasBuffer
             ? "💡 Ask any question about the captured screenshot."
             : supportsVision
-            ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
-            : "💡 Vision-capable models: grok-2-vision-1212, grok-beta"
+              ? "⚠️ Note: Image data will not be carried over if you continue in Chat."
+              : "💡 Vision-capable models: grok-2-vision-1212, grok-beta"
         }
       />
     </Form>

@@ -83,6 +83,53 @@
       "description": "Summarize the site",
       "mode": "view",
       "icon": "grok-light.png"
+    },
+    {
+      "name": "askAboutSelectedScreenArea",
+      "title": "Ask About Selected Screen Area",
+      "description": "Ask Grok AI about the selected screen area",
+      "mode": "view",
+      "icon": "grok-light.png",
+      "preferences": [
+        {
+          "name": "model",
+          "title": "Model",
+          "description": "Which model this command uses.",
+          "type": "dropdown",
+          "required": false,
+          "default": "grok-2-vision-1212",
+          "data": [
+            {
+              "title": "grok-4 (Our latest multimodal model that processes documents, diagrams, charts, screenshots, and photographs.)",
+              "value": "grok-4"
+            },
+            {
+              "title": "grok-2-vision-1212 (Our latest multimodal which processes documents, diagrams, charts, screenshots, and photographs.)",
+              "value": "grok-2-vision-1212"
+            },
+            {
+              "title": "grok-beta (Our latest image understanding model that can process a wide variety of visual information, including documents, diagrams, charts, screenshots, and photographs.)",
+              "value": "grok-beta"
+            },
+            {
+              "title": "grok-vision-2 (xAI's best vision model with enhanced visual comprehension and reasoning capabilities.)",
+              "value": "grok-vision-2"
+            },
+            {
+              "title": "grok-vision-beta (Beta vision model for processing visual information and multimodal tasks.)",
+              "value": "grok-vision-beta"
+            }
+          ]
+        },
+        {
+          "name": "prompt",
+          "title": "System Prompt",
+          "description": "The prompt to use for this command.",
+          "type": "textfield",
+          "required": false,
+          "default": "You are given a screenshot. Please analyze the image and provide a detailed and informative response to the user's question about what you see in the image."
+        }
+      ]
     }
   ],
   "preferences": [

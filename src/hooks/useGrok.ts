@@ -54,10 +54,42 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
           // Add images to the content
           imageFiles.forEach(imageBuffer => {
             const base64Image = imageBuffer.toString("base64");
+
+            // Detect image format from the first few bytes (magic numbers)
+            let mimeType = "image/jpeg"; // default fallback
+
+            // Check magic numbers to determine actual image format
+            if (
+              imageBuffer[0] === 0x89 &&
+              imageBuffer[1] === 0x50 &&
+              imageBuffer[2] === 0x4e &&
+              imageBuffer[3] === 0x47
+            ) {
+              mimeType = "image/png";
+            } else if (imageBuffer[0] === 0xff && imageBuffer[1] === 0xd8 && imageBuffer[2] === 0xff) {
+              mimeType = "image/jpeg";
+            } else if (imageBuffer[0] === 0x47 && imageBuffer[1] === 0x49 && imageBuffer[2] === 0x46) {
+              mimeType = "image/gif";
+            } else if (
+              imageBuffer[0] === 0x52 &&
+              imageBuffer[1] === 0x49 &&
+              imageBuffer[2] === 0x46 &&
+              imageBuffer[3] === 0x46
+            ) {
+              mimeType = "image/webp";
+            } else if (imageBuffer[0] === 0x42 && imageBuffer[1] === 0x4d) {
+              mimeType = "image/bmp";
+            } else if (
+              imageBuffer.slice(4, 12).toString() === "ftypheic" ||
+              imageBuffer.slice(4, 12).toString() === "ftypmif1"
+            ) {
+              mimeType = "image/heic";
+            }
+
             content.push({
               type: "image_url",
               image_url: {
-                url: `data:image/jpeg;base64,${base64Image}`,
+                url: `data:${mimeType};base64,${base64Image}`,
               },
             });
           });

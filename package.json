@@ -253,7 +253,6 @@
     "@raycast/eslint-config": "^2.0.4",
     "@raycast/utils": "^1.19.1",
     "@types/react": "^19.1.11",
-    "ahooks": "^3.9.4",
     "openai": "^4.104.0",
     "react": "^19.1.1",
     "usehooks-ts": "^3.1.1"

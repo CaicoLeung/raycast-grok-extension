@@ -42,7 +42,7 @@ According to Elon Musk's vision, Grok AI maintains its natural personality witho
 
 ## 🛠️ Features & Use Cases
 
-This extension provides **8 powerful commands** that cover a wide range of AI-assisted workflows:
+This extension provides **9 powerful commands** that cover a wide range of AI-assisted workflows:
 
 ### 1. 💬 **Ask AI**
 
@@ -123,6 +123,31 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
   - Quick fact-checking and verification
   - Context-sensitive help and guidance
 - **Smart Text Acquisition**: Works with both selected text and clipboard content
+
+### 9. 📰 **Solidot Daily**
+
+- **Purpose**: Automated daily tech news summaries from Solidot.org using Grok AI
+- **Use Cases**:
+  - Stay updated with Chinese tech news
+  - Get AI-categorized news summaries by industry
+  - Track technology trends over time
+  - Save time on news consumption
+- **Features**:
+  - **📅 Smart Date Management**: Automatically processes the last 15 days (excluding today)
+  - **🔄 Automatic Generation**: Checks for missing summaries and generates them on-demand
+  - **🏷️ Industry Categorization**: AI-powered categorization by tech sectors (AI, Hardware, Software, Security, etc.)
+  - **💾 Local Storage**: Summaries stored locally with automatic cleanup (maintains 15 most recent)
+  - **🚫 Deduplication**: Prevents regenerating existing summaries
+  - **⚡ One-Click Updates**: Easy regeneration and management of summaries
+- **Workflow**:
+  1. Fetches RSS feed from Solidot.org
+  2. Groups news by date (last 15 days)
+  3. Uses Grok AI to categorize and summarize each day's news
+  4. Stores summaries locally with smart cleanup
+- **Shortcuts**:
+  - `⌘R`: Check and generate missing summaries
+  - `⌘G`: Regenerate specific day's summary
+  - `⌘D`: Delete summary
 
 ## 🔧 Technology Stack
 

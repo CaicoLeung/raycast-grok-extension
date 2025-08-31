@@ -5,7 +5,8 @@
   "description": "Access Grok AI conveniently through Raycast",
   "icon": "grok-light.png",
   "private": true,
-  "author": "CaicoLeung",
+  "author": "caico_leung",
+  "license": "MIT",
   "version": "0.0.1",
   "commands": [
     {

@@ -85,6 +85,13 @@
       "icon": "grok-light.png"
     },
     {
+      "name": "refine",
+      "title": "Refine",
+      "description": "Refine the text",
+      "mode": "view",
+      "icon": "grok-light.png"
+    },
+    {
       "name": "summarizeSite",
       "title": "Summarize Site",
       "description": "Summarize the site",

@@ -21,18 +21,22 @@
 **Grok AI** stands out in the crowded AI landscape for several compelling reasons:
 
 ### 🎭 Authentic AI Personality
+
 According to Elon Musk's vision, Grok AI maintains its natural personality without artificial intervention or heavy-handed content moderation. This means:
+
 - **🚫 No Political Correctness Filters**: Grok provides honest, unfiltered responses without being constrained by excessive political correctness
 - **🎯 Genuine Interactions**: The AI's responses feel more authentic and human-like, as they aren't artificially sanitized
 - **💭 Natural Reasoning**: Grok thinks and responds in a more natural way, closer to how humans actually process information
 
 ### 🔧 Technical Excellence
+
 - **🌟 State-of-the-Art Models**: Access to cutting-edge models including Grok-4, Grok-3-Beta, and specialized vision models
 - **👁️ Multimodal Capabilities**: Advanced image understanding and analysis capabilities
 - **⚡ Real-Time Processing**: Fast response times with streaming capabilities
 - **🎨 Versatile Applications**: From text analysis to image understanding, translation to code explanation
 
 ### 🆓 Accessibility
+
 - **💰 Cost-Effective**: More accessible pricing compared to some competitors
 - **🔓 Open Philosophy**: Aligned with principles of open AI development and reduced censorship
 
@@ -41,6 +45,7 @@ According to Elon Musk's vision, Grok AI maintains its natural personality witho
 This extension provides **8 powerful commands** that cover a wide range of AI-assisted workflows:
 
 ### 1. 💬 **Ask AI**
+
 - **Purpose**: General-purpose AI conversation and query handling
 - **Use Cases**:
   - Get answers to complex questions
@@ -51,6 +56,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 - **Usage**: `⌘ Space` → Type "Ask AI" → Enter your question
 
 ### 2. 📖 **History**
+
 - **Purpose**: View and manage your chat history with Grok AI
 - **Use Cases**:
   - Review previous conversations
@@ -60,6 +66,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 - **Features**: Searchable history, copy functionality, timestamp tracking
 
 ### 3. 🌐 **Translate**
+
 - **Purpose**: Intelligent bidirectional translation between English and Chinese
 - **Use Cases**:
   - Translate selected text instantly
@@ -69,6 +76,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 - **Smart Detection**: Automatically detects source language and translates accordingly
 
 ### 4. 📚 **Lookup**
+
 - **Purpose**: Dictionary and reference lookup functionality
 - **Use Cases**:
   - Define unfamiliar words or terms
@@ -77,6 +85,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
   - Expand vocabulary and knowledge
 
 ### 5. 💡 **Explain It**
+
 - **Purpose**: Detailed explanations of complex topics or selected text
 - **Use Cases**:
   - Understand difficult concepts
@@ -85,6 +94,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
   - Educational assistance and learning support
 
 ### 6. 📄 **Summarize Site**
+
 - **Purpose**: Intelligent webpage content summarization
 - **Use Cases**:
   - Quickly understand long articles
@@ -94,6 +104,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 - **Features**: Structured summaries with key points, target audience analysis, and actionable insights
 
 ### 7. 🖼️ **Ask About Selected Screen Area**
+
 - **Purpose**: AI-powered analysis of screenshots and visual content
 - **Use Cases**:
   - Analyze UI/UX designs
@@ -104,6 +115,7 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 - **Smart Capture**: Automatically captures selected screen areas
 
 ### 8. 📝 **Ask About Selected Text**
+
 - **Purpose**: Context-aware analysis of selected or clipboard text
 - **Use Cases**:
   - Analyze code snippets
@@ -117,27 +129,32 @@ This extension provides **8 powerful commands** that cover a wide range of AI-as
 This extension is built using modern web technologies and Raycast's powerful API:
 
 ### **Frontend Framework**
+
 - **⚛️ React 19.1.1**: Latest React with concurrent features and improved performance
 - **📘 TypeScript 5.9.2**: Full type safety and enhanced developer experience
 - **🎨 Raycast API 1.102.5**: Native Raycast integration for seamless UX
 
 ### **AI Integration**
+
 - **🤖 OpenAI SDK 4.104.0**: Robust API client for Grok AI communication
 - **🔄 Streaming Responses**: Real-time response streaming for better UX
 - **🎯 Multiple Model Support**: Access to various Grok models for different use cases
 
 ### **Development Tools**
+
 - **⚡ Vite 6.3.5**: Lightning-fast build tool and development server
 - **🧪 Vitest 3.2.4**: Modern testing framework with coverage support
 - **🔍 ESLint 9.34.0**: Code quality and consistency enforcement
 - **💅 Prettier 3.6.2**: Automated code formatting
 
 ### **Utilities & Hooks**
+
 - **🪝 usehooks-ts 3.1.1**: Collection of useful React hooks
 - **🛠️ Raycast Utils 1.19.1**: Additional utilities for Raycast development
 - **📦 Custom Hooks**: `useGrok` for AI integration, `useChatHistory` for state management
 
 ### **Build & Deployment**
+
 - **📦 Package Management**: Support for both npm and pnpm
 - **🔨 Build Pipeline**: Automated building with ray CLI
 - **🚀 Publishing**: Direct publishing to Raycast Store
@@ -146,10 +163,12 @@ This extension is built using modern web technologies and Raycast's powerful API
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - **Raycast**: Install from [raycast.com](https://raycast.com)
 - **Grok AI API Key**: Obtain from xAI platform
 
 ### Installation
+
 1. Clone this repository
 2. Install dependencies: `npm install` or `pnpm install`
 3. Configure your Grok AI API key in Raycast preferences
@@ -157,6 +176,7 @@ This extension is built using modern web technologies and Raycast's powerful API
 5. Install in Raycast: `npm run dev`
 
 ### Configuration
+
 - Set your **Grok AI API Key** in the extension preferences
 - Choose your preferred **default model** (Grok-3-Mini-Beta recommended for general use)
 - Customize **system prompts** for different commands if needed
@@ -179,4 +199,4 @@ See [LICENSE.md](LICENSE.md) for details.
 
 ---
 
-*Built with ❤️ using Raycast API and Grok AI*
+_Built with ❤️ using Raycast API and Grok AI_

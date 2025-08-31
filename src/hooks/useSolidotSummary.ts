@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { getPreferenceValues, showToast, Toast } from "@raycast/api";
+import { getPreferenceValues } from "@raycast/api";
 import OpenAI from "openai";
 import { PreferenceModel } from "../models/preference.model";
 

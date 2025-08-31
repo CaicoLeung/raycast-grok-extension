@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { List, ActionPanel, Action, showToast, Toast, LocalStorage } from "@raycast/api";
+import { List, ActionPanel, Action, showToast, Toast, LocalStorage, Detail } from "@raycast/api";
 import Parser from "rss-parser";
 import { useSolidotSummary, SolidotItem } from "./hooks/useSolidotSummary";
 
@@ -302,34 +302,23 @@ export default function SolidotDaily() {
 
 function SummaryDetail({ summary }: { summary: DailySummary }) {
   return (
-    <List>
-      <List.Item
-        title={`${summary.date} 新闻摘要`}
-        detail={
-          <List.Item.Detail
-            markdown={summary.summary}
-            metadata={
-              <List.Item.Detail.Metadata>
-                <List.Item.Detail.Metadata.Label title="日期" text={summary.date} />
-                <List.Item.Detail.Metadata.Label title="新闻数量" text={`${summary.newsCount} 条`} />
-                <List.Item.Detail.Metadata.Label title="生成时间" text={new Date(summary.generated).toLocaleString()} />
-                <List.Item.Detail.Metadata.Separator />
-                <List.Item.Detail.Metadata.Link
-                  title="访问 Solidot"
-                  target="https://www.solidot.org"
-                  text="solidot.org"
-                />
-              </List.Item.Detail.Metadata>
-            }
-          />
-        }
-        actions={
-          <ActionPanel>
-            <Action.CopyToClipboard title="复制摘要" content={summary.summary} />
-            <Action.OpenInBrowser title="访问 Solidot" url="https://www.solidot.org" />
-          </ActionPanel>
-        }
-      />
-    </List>
+    <Detail
+      markdown={summary.summary}
+      metadata={
+        <Detail.Metadata>
+          <Detail.Metadata.Label title="日期" text={summary.date} />
+          <Detail.Metadata.Label title="新闻数量" text={`${summary.newsCount} 条`} />
+          <Detail.Metadata.Label title="生成时间" text={new Date(summary.generated).toLocaleString()} />
+          <Detail.Metadata.Separator />
+          <Detail.Metadata.Link title="访问 Solidot" target="https://www.solidot.org" text="solidot.org" />
+        </Detail.Metadata>
+      }
+      actions={
+        <ActionPanel>
+          <Action.CopyToClipboard title="复制摘要" content={summary.summary} />
+          <Action.OpenInBrowser title="访问 Solidot" url="https://www.solidot.org" />
+        </ActionPanel>
+      }
+    />
   );
 }

@@ -151,6 +151,13 @@
       "description": "Ask Grok AI about the selected text",
       "mode": "view",
       "icon": "grok-light.png"
+    },
+    {
+      "name": "solidotDaily",
+      "title": "Solidot Daily",
+      "description": "Generate daily Solidot news summaries using Grok AI",
+      "mode": "view",
+      "icon": "grok-light.png"
     }
   ],
   "preferences": [
@@ -269,6 +276,7 @@
     "@types/react": "^19.1.11",
     "openai": "^4.104.0",
     "react": "^19.1.1",
+    "rss-parser": "^3.13.0",
     "usehooks-ts": "^3.1.1"
   }
 }

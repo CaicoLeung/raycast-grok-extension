@@ -305,8 +305,24 @@ function SummaryDetail({ summary }: { summary: DailySummary }) {
     <List>
       <List.Item
         title={`${summary.date} 新闻摘要`}
-        subtitle={`${summary.newsCount} 条新闻 • 生成于 ${new Date(summary.generated).toLocaleString()}`}
-        detail={<List.Item.Detail markdown={summary.summary} />}
+        detail={
+          <List.Item.Detail
+            markdown={summary.summary}
+            metadata={
+              <List.Item.Detail.Metadata>
+                <List.Item.Detail.Metadata.Label title="日期" text={summary.date} />
+                <List.Item.Detail.Metadata.Label title="新闻数量" text={`${summary.newsCount} 条`} />
+                <List.Item.Detail.Metadata.Label title="生成时间" text={new Date(summary.generated).toLocaleString()} />
+                <List.Item.Detail.Metadata.Separator />
+                <List.Item.Detail.Metadata.Link
+                  title="访问 Solidot"
+                  target="https://www.solidot.org"
+                  text="solidot.org"
+                />
+              </List.Item.Detail.Metadata>
+            }
+          />
+        }
         actions={
           <ActionPanel>
             <Action.CopyToClipboard title="复制摘要" content={summary.summary} />

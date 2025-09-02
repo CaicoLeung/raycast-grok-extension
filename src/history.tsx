@@ -26,40 +26,47 @@ export default function History() {
 
   return (
     <List isLoading={isLoading}>
-      {history.map(entry => (
-        <List.Item
-          key={entry.id}
-          title={entry.prompt.substring(0, 60)}
-          subtitle={toLocalTime(entry.timestamp)}
-          accessories={[
-            {
-              text: `Model: ${entry.model || "Not specified"}`,
-              tooltip: "Model used for this query",
-            },
-          ]}
-          detail={<List.Item.Detail markdown={generateMarkdown(entry)} />}
-          actions={
-            <ActionPanel>
-              <Action.CopyToClipboard
-                title="Copy Response"
-                content={entry.response}
-                shortcut={{ modifiers: ["cmd"], key: "c" }}
-              />
-              <Action.CopyToClipboard
-                title="Copy Prompt"
-                content={entry.prompt}
-                shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
-              />
-              <Action
-                title="Clear History"
-                icon={Icon.Trash}
-                shortcut={{ modifiers: ["shift", "cmd"], key: "backspace" }}
-                onAction={handleClearHistory}
-              />
-            </ActionPanel>
-          }
+      {history.length > 0 ? (
+        history.map(entry => (
+          <List.Item
+            key={entry.id}
+            title={entry.prompt.substring(0, 60)}
+            subtitle={toLocalTime(entry.timestamp)}
+            accessories={[
+              {
+                text: `Model: ${entry.model || "Not specified"}`,
+                tooltip: "Model used for this query",
+              },
+            ]}
+            detail={<List.Item.Detail markdown={generateMarkdown(entry)} />}
+            actions={
+              <ActionPanel>
+                <Action.CopyToClipboard
+                  title="Copy Response"
+                  content={entry.response}
+                  shortcut={{ modifiers: ["cmd"], key: "c" }}
+                />
+                <Action.CopyToClipboard
+                  title="Copy Prompt"
+                  content={entry.prompt}
+                  shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
+                />
+                <Action
+                  title="Clear History"
+                  icon={Icon.Trash}
+                  shortcut={{ modifiers: ["shift", "cmd"], key: "backspace" }}
+                  onAction={handleClearHistory}
+                />
+              </ActionPanel>
+            }
+          />
+        ))
+      ) : (
+        <List.EmptyView
+          title="No Chat History"
+          description="Your chat history will appear here after you start conversations"
         />
-      ))}
+      )}
     </List>
   );
 }

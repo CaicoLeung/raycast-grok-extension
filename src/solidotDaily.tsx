@@ -114,8 +114,8 @@ export default function SolidotDaily() {
         if (!existingSummaryDates.has(date) && newsItems.length > 0) {
           await showToast({
             style: Toast.Style.Animated,
-            title: "生成摘要中...",
-            message: `正在为 ${date} 生成新闻摘要`,
+            title: "Generating summary...",
+            message: `Generating news summary for ${date}`,
           });
 
           try {
@@ -130,15 +130,15 @@ export default function SolidotDaily() {
 
             await showToast({
               style: Toast.Style.Success,
-              title: "摘要生成完成",
-              message: `${date} 的新闻摘要已生成 (${newsItems.length} 条新闻)`,
+              title: "Summary generation completed",
+              message: `News summary for ${date} has been generated (${newsItems.length} news items)`,
             });
           } catch (error) {
             console.error(`Failed to generate summary for ${date}:`, error);
             await showToast({
               style: Toast.Style.Failure,
-              title: "生成失败",
-              message: `无法为 ${date} 生成摘要`,
+              title: "Generation failed",
+              message: `Unable to generate summary for ${date}`,
             });
           }
         }
@@ -149,16 +149,16 @@ export default function SolidotDaily() {
       } else {
         await showToast({
           style: Toast.Style.Success,
-          title: "检查完成",
-          message: "所有摘要都是最新的",
+          title: "Check completed",
+          message: "All summaries are up to date",
         });
       }
     } catch (error) {
       console.error("Failed to check and generate summaries:", error);
       await showToast({
         style: Toast.Style.Failure,
-        title: "检查失败",
-        message: "无法检查或生成摘要",
+        title: "Check failed",
+        message: "Unable to check or generate summaries",
       });
     } finally {
       setIsGenerating(false);
@@ -179,16 +179,16 @@ export default function SolidotDaily() {
         if (!newsItems || newsItems.length === 0) {
           await showToast({
             style: Toast.Style.Failure,
-            title: "重新生成失败",
-            message: `${date} 没有找到新闻数据`,
+            title: "Regeneration failed",
+            message: `No news data found for ${date}`,
           });
           return;
         }
 
         await showToast({
           style: Toast.Style.Animated,
-          title: "重新生成中...",
-          message: `正在为 ${date} 重新生成摘要`,
+          title: "Regenerating...",
+          message: `Regenerating summary for ${date}`,
         });
 
         const summary = await generateSummaryForDate(date, newsItems);
@@ -201,15 +201,15 @@ export default function SolidotDaily() {
 
         await showToast({
           style: Toast.Style.Success,
-          title: "重新生成完成",
-          message: `${date} 的摘要已更新`,
+          title: "Regeneration completed",
+          message: `Summary for ${date} has been updated`,
         });
       } catch (error) {
         console.error(`Failed to regenerate summary for ${date}:`, error);
         await showToast({
           style: Toast.Style.Failure,
-          title: "重新生成失败",
-          message: `无法为 ${date} 重新生成摘要`,
+          title: "Regeneration failed",
+          message: `Unable to regenerate summary for ${date}`,
         });
       } finally {
         setIsGenerating(false);
@@ -226,8 +226,8 @@ export default function SolidotDaily() {
 
       await showToast({
         style: Toast.Style.Success,
-        title: "删除成功",
-        message: `${date} 的摘要已删除`,
+        title: "Delete successful",
+        message: `Summary for ${date} has been deleted`,
       });
     },
     [summaries, saveSummaries]
@@ -244,11 +244,11 @@ export default function SolidotDaily() {
   return (
     <List
       isLoading={isGenerating || isSummaryGenerating}
-      searchBarPlaceholder="搜索日期或内容..."
+      searchBarPlaceholder="Search date or content..."
       actions={
         <ActionPanel>
           <Action
-            title="检查并生成缺失的摘要"
+            title="Check and generate missing summaries"
             onAction={checkAndGenerateMissingSummaries}
             shortcut={{ modifiers: ["cmd"], key: "r" }}
           />
@@ -257,11 +257,11 @@ export default function SolidotDaily() {
     >
       {summaries.length === 0 ? (
         <List.EmptyView
-          title="暂无摘要"
-          description="点击 ⌘R 检查并生成最近15天的新闻摘要"
+          title="No summaries"
+          description="Click ⌘R to check and generate news summaries for the last 15 days"
           actions={
             <ActionPanel>
-              <Action title="检查并生成缺失的摘要" onAction={checkAndGenerateMissingSummaries} />
+              <Action title="Check and generate missing summaries" onAction={checkAndGenerateMissingSummaries} />
             </ActionPanel>
           }
         />
@@ -270,24 +270,24 @@ export default function SolidotDaily() {
           <List.Item
             key={summary.date}
             title={summary.date}
-            subtitle={`${summary.newsCount} 条新闻`}
+            subtitle={`${summary.newsCount} news items`}
             accessories={[{ text: new Date(summary.generated).toLocaleDateString() }]}
             actions={
               <ActionPanel>
-                <Action.Push title="查看摘要" target={<SummaryDetail summary={summary} />} />
+                <Action.Push title="View summary" target={<SummaryDetail summary={summary} />} />
                 <Action
-                  title="重新生成"
+                  title="Regenerate"
                   onAction={() => regenerateSummary(summary.date)}
                   shortcut={{ modifiers: ["cmd"], key: "g" }}
                 />
                 <Action
-                  title="删除"
+                  title="Delete"
                   onAction={() => deleteSummary(summary.date)}
                   shortcut={{ modifiers: ["cmd"], key: "d" }}
                   style={Action.Style.Destructive}
                 />
                 <Action
-                  title="检查并生成缺失的摘要"
+                  title="Check and generate missing summaries"
                   onAction={checkAndGenerateMissingSummaries}
                   shortcut={{ modifiers: ["cmd"], key: "r" }}
                 />
@@ -306,17 +306,17 @@ function SummaryDetail({ summary }: { summary: DailySummary }) {
       markdown={summary.summary}
       metadata={
         <Detail.Metadata>
-          <Detail.Metadata.Label title="日期" text={summary.date} />
-          <Detail.Metadata.Label title="新闻数量" text={`${summary.newsCount} 条`} />
-          <Detail.Metadata.Label title="生成时间" text={new Date(summary.generated).toLocaleString()} />
+          <Detail.Metadata.Label title="Date" text={summary.date} />
+          <Detail.Metadata.Label title="News count" text={`${summary.newsCount} items`} />
+          <Detail.Metadata.Label title="Generated time" text={new Date(summary.generated).toLocaleString()} />
           <Detail.Metadata.Separator />
-          <Detail.Metadata.Link title="访问 Solidot" target="https://www.solidot.org" text="solidot.org" />
+          <Detail.Metadata.Link title="Visit Solidot" target="https://www.solidot.org" text="solidot.org" />
         </Detail.Metadata>
       }
       actions={
         <ActionPanel>
-          <Action.CopyToClipboard title="复制摘要" content={summary.summary} />
-          <Action.OpenInBrowser title="访问 Solidot" url="https://www.solidot.org" />
+          <Action.CopyToClipboard title="Copy summary" content={summary.summary} />
+          <Action.OpenInBrowser title="Visit Solidot" url="https://www.solidot.org" />
         </ActionPanel>
       }
     />

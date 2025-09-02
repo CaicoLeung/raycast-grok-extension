@@ -121,7 +121,7 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
           const content = chunk.choices[0].delta?.content || "";
           switch (finish_reason) {
             case "stop": {
-              // 正常结束，返回完整的翻译结果
+              // Normal completion, return complete translation result
               const end = Date.now();
               const duration = end - start;
               await addToHistory(query, delta, model);
@@ -134,23 +134,23 @@ export function useGrok(prompt: string, launchContext?: LaunchProps["launchConte
               break;
             }
             case "length":
-              // 达到最大长度限制
-              delta += "\n[翻译被截断：达到最大长度限制]";
+              // Reached maximum length limit
+              delta += "\n[Translation truncated: reached maximum length limit]";
               setTextStream(delta);
               break;
             case "content_filter":
-              // 内容被过滤
-              delta += "\n[翻译被过滤：可能包含不适当内容]";
+              // Content filtered
+              delta += "\n[Translation filtered: may contain inappropriate content]";
               setTextStream(delta);
               break;
             case "tool_calls":
             case "function_call":
-              // API调用相关，一般不会在翻译中出现
-              delta += "\n[不支持的响应类型]";
+              // API call related, generally not used in translation
+              delta += "\n[Unsupported response type]";
               setTextStream(delta);
               break;
             default:
-              // 继续累积翻译内容
+              // Continue accumulating translation content
               delta += content;
               setTextStream(delta);
               break;

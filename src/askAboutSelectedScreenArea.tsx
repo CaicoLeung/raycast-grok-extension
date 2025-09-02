@@ -4,6 +4,7 @@ import fs from "node:fs";
 import util from "node:util";
 import { exec } from "child_process";
 import DetailUI from "./ui/DetailUI";
+import { showFailureToast } from "@raycast/utils";
 
 export default function AskAboutSelectedScreenArea() {
   const [isCapturing, setIsCapturing] = useState(false);
@@ -19,46 +20,46 @@ export default function AskAboutSelectedScreenArea() {
     try {
       setIsCapturing(true);
 
-      // 关闭 Raycast 窗口以便用户可以看到屏幕
+      // Close the Raycast window so users can see the screen.
       await closeMainWindow();
 
-      // 等待更长时间让窗口完全关闭，避免并发问题
+      // Wait for a longer time to ensure the window is fully closed to avoid concurrency issues.
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       const execPromise = util.promisify(exec);
       const screenshotPath = `${environment.assetsPath}/screenshot_${Date.now()}.png`;
 
-      // 首先检查是否有正在运行的截图进程
+      // First check if there is a running screenshot process.
       try {
         await execPromise("pgrep screencapture");
-        // 如果有进程在运行，等待它完成
+        // If there is a process running, wait for it to complete.
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch {
-        // 没有进程在运行，继续
+        // If there is no process running, continue.
       }
 
-      // 添加超时和更详细的错误处理
+      // Add timeout and more detailed error handling.
       const screencaptureCmd = `/usr/sbin/screencapture -s "${screenshotPath}"`;
 
       try {
-        // 设置超时为30秒，给用户足够时间完成截图
+        // Set timeout to 30 seconds to give users enough time to complete the screenshot.
         await Promise.race([
           execPromise(screencaptureCmd),
           new Promise((_, reject) => setTimeout(() => reject(new Error("Screenshot timeout")), 30000)),
         ]);
 
-        // 检查截图文件是否真的存在
+        // Check if the screenshot file really exists.
         if (!fs.existsSync(screenshotPath)) {
           throw new Error("Screenshot file not created - user may have cancelled");
         }
 
         await showToast({
           style: Toast.Style.Success,
-          title: "截图完成",
-          message: "正在启动 Ask AI...",
+          title: "Screenshot completed",
+          message: "Starting Ask AI...",
         });
 
-        // 启动 askAI 命令，传递截图文件路径
+        // Launch the askAI command, passing the screenshot file path.
         await launchCommand({
           name: "askAI",
           type: LaunchType.UserInitiated,
@@ -75,38 +76,34 @@ export default function AskAboutSelectedScreenArea() {
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
         if (errorMessage.includes("cannot run two interactive screen captures")) {
-          await showToast({
-            style: Toast.Style.Failure,
-            title: "截图冲突",
-            message: "请等待其他截图完成后重试",
+          await showFailureToast(error, {
+            title: "Screenshot conflict",
+            message: "Please wait for other screenshots to complete and try again.",
           });
         } else if (errorMessage.includes("timeout")) {
-          await showToast({
-            style: Toast.Style.Failure,
-            title: "截图超时",
-            message: "请重新运行命令",
+          await showFailureToast(error, {
+            title: "Screenshot timeout",
+            message: "Please try again.",
           });
         } else {
-          await showToast({
-            style: Toast.Style.Failure,
-            title: "截图取消",
-            message: "用户取消了截图操作",
+          await showFailureToast(error, {
+            title: "Screenshot cancelled",
+            message: "The user cancelled the screenshot operation.",
           });
         }
       }
     } catch (error) {
-      console.error("截图失败:", error);
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "截图失败",
-        message: "请重试",
+      console.error("Screenshot failed:", error);
+      await showFailureToast(error, {
+        title: "Screenshot failed",
+        message: "Please try again.",
       });
     } finally {
       setIsCapturing(false);
     }
   }, [isCapturing, captureCompleted]);
 
-  // 组件加载时自动开始截图，但只执行一次
+  // Automatically start capturing the screen when the component loads, but only once.
   useEffect(() => {
     if (!hasStarted && !isCapturing && !captureCompleted) {
       setHasStarted(true);
@@ -114,11 +111,11 @@ export default function AskAboutSelectedScreenArea() {
     }
   }, [hasStarted, isCapturing, captureCompleted, captureScreenArea]);
 
-  // 如果截图完成，显示成功信息
+  // If the screenshot is completed, display the success message.
   if (captureCompleted) {
-    return <DetailUI textStream="截图已完成，Ask AI 命令已启动。" isLoading={false} lastQuery="" />;
+    return <DetailUI textStream="Screenshot completed, Ask AI command started." isLoading={false} lastQuery="" />;
   }
 
-  // 如果正在截图，显示加载状态
-  return <DetailUI textStream="正在等待截图..." isLoading={true} lastQuery="" />;
+  // If the screenshot is in progress, display the loading state.
+  return <DetailUI textStream="Waiting for screenshot..." isLoading={true} lastQuery="" />;
 }

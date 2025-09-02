@@ -4,35 +4,35 @@ import { useGrok } from "./hooks/useGrok";
 import { useEffect, useRef } from "react";
 
 const prompt = `
-请提供关于用户提供文本的详细解释，包括以下方面：
-1. 词源: 解释该词的起源、词根，以及它是如何演变而来的。
-2. 发音: 描述该词的发音，包括任何语音上的细微差别。
-3. 定义: 提供该词的主要含义以及任何次要含义。
-4. 用法: 给出使用该词的句子示例，并展示在不同语境下的用法。
-5. 同义词和反义词: 列出同义词和反义词，并解释它们在意义或用法上的区别。
-6. 相关词汇: 提及任何相关词汇或衍生词，并解释它们与原词的关联。
-7. 文化或历史背景: 提供任何相关的文化或历史信息，以帮助理解该词的使用或意义。
+Please provide a detailed explanation of the user-provided text, including the following aspects:
+1. Etymology: Explain the origin, root words, and how it evolved.
+2. Pronunciation: Describe the pronunciation, including any phonetic nuances.
+3. Definition: Provide the main meaning and any secondary meanings.
+4. Usage: Give sentence examples using the word and demonstrate its usage in different contexts.
+5. Synonyms and Antonyms: List synonyms and antonyms, and explain their differences in meaning or usage.
+6. Related Words: Mention any related words or derivatives, and explain their connection to the original word.
+7. Cultural or Historical Context: Provide any relevant cultural or historical information to help understand the word's usage or meaning.
 `;
 
 export default function Lookup({ launchContext }: LaunchProps) {
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
   const hasInitialized = useRef(false);
 
-  // 获取选中的文本或剪切板文本
+  // Get selected text or clipboard text
   useEffect(() => {
-    // 防止重复执行
+    // Prevent duplicate execution
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
     const acquireText = async () => {
       try {
-        // 首先尝试获取选中的文本
+        // First try to get selected text
         let text = "";
         try {
           text = await getSelectedText();
           console.debug("Acquired selected text:", text);
         } catch {
-          // 如果没有选中文本，则获取剪切板的最近一条文本
+          // If no text is selected, get the most recent text from clipboard
           const clipboardText = await Clipboard.readText();
           text = clipboardText || "";
           console.debug("Acquired clipboard text:", text);
@@ -55,7 +55,7 @@ export default function Lookup({ launchContext }: LaunchProps) {
 
     acquireText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 空依赖数组，只在组件挂载时执行一次
+  }, []); // Empty dependency array, only execute once when component mounts
 
   return <DetailUI textStream={textStream} isLoading={isLoading} lastQuery={lastQuery} />;
 }

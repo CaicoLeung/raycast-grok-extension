@@ -10,21 +10,21 @@ export default function Translate({ launchContext }: LaunchProps) {
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
   const hasInitialized = useRef(false);
 
-  // 获取选中的文本或剪切板文本
+  // Get selected text or clipboard text
   useEffect(() => {
-    // 防止重复执行
+    // Prevent duplicate execution
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
     const acquireText = async () => {
       try {
-        // 首先尝试获取选中的文本
+        // First try to get selected text
         let text = "";
         try {
           text = await getSelectedText();
           console.debug("Acquired selected text:", text);
         } catch {
-          // 如果没有选中文本，则获取剪切板的最近一条文本
+          // If no text is selected, get the most recent text from clipboard
           const clipboardText = await Clipboard.readText();
           text = clipboardText || "";
           console.debug("Acquired clipboard text:", text);
@@ -47,7 +47,7 @@ export default function Translate({ launchContext }: LaunchProps) {
 
     acquireText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 空依赖数组，只在组件挂载时执行一次
+  }, []); // Empty dependency array, only execute once when component mounts
 
   return <DetailUI textStream={textStream} isLoading={isLoading} lastQuery={lastQuery} />;
 }

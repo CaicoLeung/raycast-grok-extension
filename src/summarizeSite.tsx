@@ -18,66 +18,66 @@ export default function SummarizeSite({ launchContext }: LaunchProps) {
   const { textStream, isLoading, lastQuery, submit } = useGrok(prompt, launchContext);
   const hasInitialized = useRef(false);
 
-  // 获取Chrome浏览器当前活跃标签页的内容
+  // Get content from Chrome browser's current active tab
   useEffect(() => {
-    // 防止重复执行
+    // Prevent duplicate execution
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
     const getWebContent = async () => {
       try {
-        // 检查是否支持浏览器扩展API
+        // Check if browser extension API is supported
         if (!environment.canAccess(BrowserExtension)) {
           await showToast({
             style: Toast.Style.Failure,
-            title: "需要安装浏览器扩展",
-            message: "请先安装Raycast浏览器扩展以获取网页内容",
+            title: "Browser extension required",
+            message: "Please install Raycast browser extension first to get webpage content",
           });
           return;
         }
 
-        // 获取当前活跃标签页的内容，使用markdown格式以获得更好的结构化内容
+        // Get content from current active tab, use markdown format for better structured content
         const webpageContent = await BrowserExtension.getContent({
           format: "markdown",
         });
 
         if (webpageContent && webpageContent.trim()) {
-          // 获取标签页信息以显示网页标题和URL
+          // Get tab information to display webpage title and URL
           const tabs = await BrowserExtension.getTabs();
           const activeTab = tabs.find(tab => tab.active);
 
           let contentToSummarize = webpageContent;
           if (activeTab) {
-            contentToSummarize = `网页标题: ${activeTab.title || "未知标题"}\n网页URL: ${activeTab.url || "未知URL"}\n\n网页内容:\n${webpageContent}`;
+            contentToSummarize = `Webpage Title: ${activeTab.title || "Unknown Title"}\nWebpage URL: ${activeTab.url || "Unknown URL"}\n\nWebpage Content:\n${webpageContent}`;
           }
 
           await showToast({
             style: Toast.Style.Success,
-            title: "已获取网页内容",
-            message: "正在使用Grok AI分析和总结...",
+            title: "Webpage content acquired",
+            message: "Analyzing and summarizing with Grok AI...",
           });
 
           submit(contentToSummarize);
         } else {
           await showToast({
             style: Toast.Style.Failure,
-            title: "无法获取网页内容",
-            message: "当前标签页可能没有可读取的内容或页面正在加载中",
+            title: "Unable to get webpage content",
+            message: "Current tab may not have readable content or page is still loading",
           });
         }
       } catch (error) {
-        console.error("获取网页内容失败:", error);
+        console.error("Failed to get webpage content:", error);
         await showToast({
           style: Toast.Style.Failure,
-          title: "获取网页内容失败",
-          message: "请确保Chrome浏览器已打开且有活跃的标签页，并已安装Raycast浏览器扩展",
+          title: "Failed to get webpage content",
+          message: "Please ensure Chrome browser is open with active tabs and Raycast browser extension is installed",
         });
       }
     };
 
     getWebContent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 空依赖数组，只在组件挂载时执行一次
+  }, []); // Empty dependency array, only execute once when component mounts
 
   return <DetailUI textStream={textStream} isLoading={isLoading} lastQuery={lastQuery} />;
 }
